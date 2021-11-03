@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search</title>
+</head>
+<body>
+  <form id="search">
+    <input type="text" placeholder="search repo" id="query">
+    <input type="submit">
+  </form>
+
+  <table id="results">
+  </table>
+
+  <script>
+    search.addEventListener('submit', (e) => {
+      e.preventDefault()
+
+      fetch(`/search?query=${query.value}`)
+        .then((res) => res.json())
+        .then((res) => {
+          document.querySelectorAll('tr').forEach((el) => el.remove())
+          res.forEach((repo) => {
+            const row = results.insertRow();
+            const cell1 = row.insertCell();
+            const cell2 = row.insertCell();
+            const cell3 = row.insertCell();
+            cell1.innerHTML = repo.name;
+            cell2.innerHTML = repo.owner;
+            cell3.innerHTML = `<a href=${repo.url}>${repo.url}</a>`;
+          })
+        })
+    })
+  </script>
+</body>
+</html>
